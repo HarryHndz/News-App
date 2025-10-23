@@ -1,14 +1,13 @@
-
+import { ChatGeneral } from "./components/ChatGeneral"
+import { HistoryChat } from "./components/HistoryChat"
 
 
 function App() {
   return (
-    <div className=''>
-      <h1 className="text-3xl font-bold">
-        News Fake App
-      </h1>
-       
-    </div>
+    <main className='flex flex-row gap-4 p-10 h-screen'>
+      <HistoryChat />
+      <ChatGeneral />
+    </main>
   )
 }
 
