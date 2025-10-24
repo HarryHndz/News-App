@@ -4,7 +4,7 @@ import { HistoryChat } from "./components/HistoryChat"
 
 function App() {
   return (
-    <main className='flex flex-row gap-4 p-10 h-screen'>
+    <main className='flex flex-row gap-4 p-10 bg-zinc-800 h-screen'>
       <HistoryChat />
       <ChatGeneral />
     </main>
