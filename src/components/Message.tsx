@@ -1,13 +1,25 @@
-interface MessageProps {
+import { UserRound,Bot} from "lucide-react";
+
+
+type TSender = "user" | "assistant";
+export interface MessageProps {
   message: string;
-  sender: string;
+  sender: TSender;
 }
 
 export const Message = ({ message, sender }: MessageProps)=>{
   return(
-    <div className="flex flex-col gap-2 bg-gray-400 p-4 rounded-xl">
-      <p className="text-white font-bold">{sender}</p>
-      <p className="text-white">{message}</p>
+    <div className="flex flex-row gap-2 bg-slate-700 p-4 rounded-xl items-center border border-slate-600">
+      <div className="rounded-full bg-indigo-600 p-2 w-10 h-10 flex items-center justify-center">
+        {sender === "user" ? 
+          <UserRound className="w-6 h-6 text-white" /> : 
+          <Bot className="w-6 h-6 text-white" />
+        }
+      </div>
+      <div className="flex flex-col break-words">
+        <p className="text-slate-100 font-bold">{sender}</p>
+        <p className="text-slate-200">{message}</p>
+      </div>
     </div>
   )
 }
