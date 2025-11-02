@@ -17,8 +17,7 @@ export default function Login() {
       const username = (formData.get('username') as string) ?? ''
       const password = (formData.get('password') as string) ?? ''
       if (!username || !password) {
-        setError('Por favor completa ambos campos.')
-        return
+        return setError('Por favor completa ambos campos.')
       }
       await signInWithEmailAndPassword(auth, username, password)
       navigate('/landing')
@@ -96,7 +95,7 @@ export default function Login() {
 
         <div className="mt-6 text-center text-sm text-slate-300">
           ¿No tienes cuenta?{' '}
-          <button onClick={() => navigate('/register')} className="text-blue-300 hover:underline">
+          <button onClick={() => navigate('/register')} className="text-blue-300 hover:underline cursor-pointer">
             Regístrate
           </button>
         </div>

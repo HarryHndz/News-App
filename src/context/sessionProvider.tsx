@@ -6,7 +6,7 @@ import {auth} from '../utils/firebaseConfig'
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
   const [session,setSession] = useState<ISession | undefined>(undefined)
-
+  const [loading,setIsLoading] = useState<boolean>(true)
   const logoutSession = async () => {
     try {
       await auth.signOut()
@@ -18,6 +18,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
+      setIsLoading(true)
       if (user) {
         user.getIdToken().then((idToken) => {
           setSession({
@@ -25,9 +26,12 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
             userId: user.uid,
             email: user.email ?? ''
           })
+        }).finally(()=>{
+          setIsLoading(false)
         })
       } else {
         setSession(undefined)
+        setIsLoading(false)
       }
     })
   },[])
@@ -35,7 +39,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   return(
     <SessionContext.Provider value={{
       user:session,
-      logout:logoutSession
+      logout:logoutSession,
+      loading:loading
     }}>
       {children}
     </SessionContext.Provider>

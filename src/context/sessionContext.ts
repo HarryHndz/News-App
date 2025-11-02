@@ -3,6 +3,7 @@ import type { ISession } from "../data/ISession";
 
 interface ISessionContext{
   user: ISession | undefined
+  loading: boolean
   logout: () => Promise<void>
 }
 
