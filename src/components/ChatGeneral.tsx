@@ -1,4 +1,4 @@
-import { InputNew } from "./InputNew"
+import { InputNew } from "./InputNews"
 import { ContentDescription } from "./ContentDescription"
 import { Message, type MessageProps } from "./Message"
 import { useState } from "react"
