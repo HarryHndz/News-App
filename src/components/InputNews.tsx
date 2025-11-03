@@ -3,7 +3,7 @@ import { Send } from 'lucide-react'
 interface InputNewProps {
   valueInput: string
   setValueInput: (value: string) => void
-  handleSend: () => void
+  handleSend: () => Promise<void>
 }
 export const InputNew = ({ valueInput, setValueInput, handleSend }: InputNewProps)=>{
   return(

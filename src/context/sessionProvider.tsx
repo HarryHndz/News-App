@@ -3,14 +3,17 @@ import type { ISession } from "../data/ISession"
 import { SessionContext } from "./sessionContext"
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from '../utils/firebaseConfig'
+import { useNavigate } from "react-router";
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
   const [session,setSession] = useState<ISession | undefined>(undefined)
   const [loading,setIsLoading] = useState<boolean>(true)
+  const navigate = useNavigate()
   const logoutSession = async () => {
     try {
       await auth.signOut()
       setSession(undefined)
+      navigate("/auth")
     } catch (error) {
       console.error("Logout error:", error)
     }

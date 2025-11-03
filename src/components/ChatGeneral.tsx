@@ -1,23 +1,39 @@
 import { InputNew } from "./InputNews"
 import { ContentDescription } from "./ContentDescription"
-import { Message, type MessageProps } from "./Message"
+import { Message } from "./Message"
 import { useState } from "react"
 import { Sparkles } from "lucide-react"
+import { useHistoryChat } from "../hooks/useHistoryChat"
 
+type TChatGeneralProps = {
+  sessionId?: string
+}
 
-
-export const ChatGeneral = ()=>{
+export const ChatGeneral = ({sessionId}: TChatGeneralProps)=>{
   const [valueInput,setValueInput] = useState<string>("")
-  const [messages,setMessages] = useState<MessageProps[]>([])
-  const handleSend = ()=>{
-    setMessages([...messages, { sender: 'user', message: valueInput }])
-    setValueInput("")
+  const {history, isLoading, error,handleNewMessage} = useHistoryChat({sessionId})
+
+  if (isLoading) {
+    return (
+    <div className="flex flex-col gap-4 bg-slate-800 p-4 rounded-lg w-4/5 overflow-y-auto relative drop-shadow-xl/50 border border-slate-700">
+        <p className="text-slate-100">Loading...</p>
+      </div>
+    )
   }
+
+  if (error) {
+    return (
+      <div className="flex flex-col gap-4 bg-slate-800 p-4 rounded-lg w-4/5 overflow-y-auto relative drop-shadow-xl/50 border border-slate-700">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    )
+  }
+  
   return (
     <div className=" flex flex-col gap-4 bg-slate-800 p-4 rounded-lg w-4/5 overflow-y-auto relative drop-shadow-xl/50 border border-slate-700">
       <h1 className="text-slate-100 text-2xl font-bold text-center">Chat General</h1>
       {
-        messages.length === 0 ? (
+        history.messages.length === 0 ? (
           <ContentDescription 
             title="Welcome!"
             description="Send the URL of any news and I will help you verify if it is reliable or not."
@@ -34,15 +50,15 @@ export const ChatGeneral = ()=>{
             icon={<Sparkles className="text-indigo-400" size={32} />}
           />
         ) : (
-          messages.map((message, index) => (
-            <Message key={index} sender={message.sender} message={message.message} />
+          history.messages.map((m, index) => (
+            <Message key={index} sender={m.sender} message={m.message} />
           ))
         )
       }
       <InputNew 
         valueInput={valueInput} 
         setValueInput={setValueInput} 
-        handleSend={handleSend} 
+        handleSend={() => handleNewMessage({value: valueInput, setValue: setValueInput})} 
       />
     </div>
   )

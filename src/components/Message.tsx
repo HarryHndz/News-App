@@ -1,10 +1,9 @@
 import { UserRound,Bot} from "lucide-react";
+import type { TSender } from "../data/IChat";
 
-
-type TSender = "user" | "assistant";
 export interface MessageProps {
-  message: string;
-  sender: TSender;
+  message: string
+  sender: TSender
 }
 
 export const Message = ({ message, sender }: MessageProps)=>{

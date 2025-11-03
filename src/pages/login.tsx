@@ -20,7 +20,7 @@ export default function Login() {
         return setError('Por favor completa ambos campos.')
       }
       await signInWithEmailAndPassword(auth, username, password)
-      navigate('/landing')
+      navigate('/chat')
     } catch (err: unknown) {
       console.error('Login error:', err)
       const message = err instanceof Error ? err.message : String(err ?? 'Error desconocido')
@@ -74,7 +74,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg disabled:opacity-60"
+              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg disabled:opacity-60 cursor-pointer"
             >
               {isLoading ? (
                 <svg
@@ -95,7 +95,7 @@ export default function Login() {
 
         <div className="mt-6 text-center text-sm text-slate-300">
           ¿No tienes cuenta?{' '}
-          <button onClick={() => navigate('/register')} className="text-blue-300 hover:underline cursor-pointer">
+          <button onClick={() => navigate('/register')} className="cursor-pointer text-blue-300 hover:underline">
             Regístrate
           </button>
         </div>
