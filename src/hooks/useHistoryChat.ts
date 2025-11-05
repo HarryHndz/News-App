@@ -34,10 +34,10 @@ export const useHistoryChat = ({sessionId,setSessionId}:TUseHistoryChatProps) =>
       const response = await postChatStart(user.token,value,sessionId)
       if(!sessionId){
         setSessionId(response.sessionId)
-        setHistory({
+        setHistory((prevValue)=>({
           sessionId: response.sessionId,
-          messages: [response]
-        })
+          messages: [...prevValue.messages, response]
+        }))
         lastFetchedRef.current = response.sessionId
       }else{
         setHistory((prevValue)=>({

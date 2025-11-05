@@ -16,7 +16,6 @@ export default function Chat() {
       <main className={`${classNames} flex flex-row gap-4`}>
         <ListChat 
           handleDetailChat={(params)=> setSearchParams({sessionId: params})} 
-          sessionId={sessionId ?? undefined} 
         />
         <ChatGeneral 
           sessionId={sessionId ?? undefined} 

@@ -5,11 +5,10 @@ import { useListChats } from "../hooks/useListChats"
 import { useNavigate } from "react-router"
 
 type THistoryChatProps = {
-  sessionId?: string
   handleDetailChat: (sessionId: string) => void
 }
 
-export const ListChat = ({sessionId, handleDetailChat}: THistoryChatProps) => {
+export const ListChat = ({handleDetailChat}: THistoryChatProps) => {
   const {listChats, isLoading, error} = useListChats()
   const navigate = useNavigate()
   if (isLoading) {
