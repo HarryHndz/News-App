@@ -7,11 +7,12 @@ import { useHistoryChat } from "../hooks/useHistoryChat"
 
 type TChatGeneralProps = {
   sessionId?: string
+  setSessionId: (params: string) => void
 }
 
-export const ChatGeneral = ({sessionId}: TChatGeneralProps)=>{
+export const ChatGeneral = ({sessionId, setSessionId}: TChatGeneralProps)=>{
   const [valueInput,setValueInput] = useState<string>("")
-  const {history, isLoading, error,handleNewMessage} = useHistoryChat({sessionId})
+  const {history, isLoading, error,handleNewMessage,isLoadingSend} = useHistoryChat({sessionId, setSessionId})
 
   if (isLoading) {
     return (
@@ -28,7 +29,7 @@ export const ChatGeneral = ({sessionId}: TChatGeneralProps)=>{
       </div>
     )
   }
-  
+
   return (
     <div className=" flex flex-col gap-4 bg-slate-800 p-4 rounded-lg w-4/5 overflow-y-auto relative drop-shadow-xl/50 border border-slate-700">
       <h1 className="text-slate-100 text-2xl font-bold text-center">Chat General</h1>
@@ -51,14 +52,23 @@ export const ChatGeneral = ({sessionId}: TChatGeneralProps)=>{
           />
         ) : (
           history.messages.map((m, index) => (
-            <Message key={index} sender={m.sender} message={m.message} />
+            <>
+              <Message key={index} sender={m.sender} message={m.message} />
+              {
+                isLoadingSend && index === history.messages.length -1 && m.sender === 'user' && (
+                  <Message key={"loading"} sender={"bot"} message={"Typing..."} />
+                )
+              }
+            </>
+           
           ))
         )
       }
       <InputNew 
         valueInput={valueInput} 
         setValueInput={setValueInput} 
-        handleSend={() => handleNewMessage({value: valueInput, setValue: setValueInput})} 
+        handleSend={() => handleNewMessage({value: valueInput, setValue: setValueInput})}
+        loadingSend={isLoadingSend}
       />
     </div>
   )

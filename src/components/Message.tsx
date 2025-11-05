@@ -8,7 +8,7 @@ export interface MessageProps {
 
 export const Message = ({ message, sender }: MessageProps)=>{
   return(
-    <div className="flex flex-row gap-2 bg-slate-700 p-4 rounded-xl items-center border border-slate-600">
+    <div className="flex flex-row gap-2 bg-slate-700 p-4 rounded-xl border border-slate-600">
       <div className="rounded-full bg-indigo-600 p-2 w-10 h-10 flex items-center justify-center">
         {sender === "user" ? 
           <UserRound className="w-6 h-6 text-white" /> : 

@@ -5,6 +5,7 @@ export interface IChatMessage {
   message:string,
   sender:TSender,
   createdAt?: string
+  sessionId: string
 }
 
 export interface IChat{

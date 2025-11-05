@@ -2,16 +2,16 @@ import { ContentDescription } from "./ContentDescription"
 import { New } from "./News"
 import { History } from "lucide-react"
 import { useListChats } from "../hooks/useListChats"
-import type { SetURLSearchParams } from "react-router"
+import { useNavigate } from "react-router"
 
 type THistoryChatProps = {
   sessionId?: string
-  setSessionId:SetURLSearchParams
+  handleDetailChat: (sessionId: string) => void
 }
 
-export const ListChat = ({sessionId, setSessionId}: THistoryChatProps) => {
+export const ListChat = ({sessionId, handleDetailChat}: THistoryChatProps) => {
   const {listChats, isLoading, error} = useListChats()
-
+  const navigate = useNavigate()
   if (isLoading) {
     return(
       <div className="bg-slate-800 p-4 rounded-lg w-1/5 h-full drop-shadow-xl/50 border border-slate-700 overflow-y-auto">
@@ -26,10 +26,16 @@ export const ListChat = ({sessionId, setSessionId}: THistoryChatProps) => {
       </div>
     )
   }
-  console.log("sessionId in HistoryChat:", sessionId);
+  
   return (
     <div className="bg-slate-800 p-4 rounded-lg w-1/5 h-full drop-shadow-xl/50 border border-slate-700 overflow-y-auto">
       <h1 className="text-slate-100 text-2xl font-bold text-center">History Chat</h1>
+      <button
+        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md mt-4 mb-6 hover:bg-indigo-700 transition-all duration-300 ease-in-out cursor-pointer"
+        onClick={() => navigate('/chat')}
+      >
+        New Chat
+      </button>
       {
         listChats.length === 0 ? (
           <ContentDescription 
@@ -39,7 +45,7 @@ export const ListChat = ({sessionId, setSessionId}: THistoryChatProps) => {
           />
         ) : (
           listChats.map((chat,i) => (
-            <New key={i} chat={chat} handleDetailChat={()=> setSessionId({sessionId: chat.sessionId})} />
+            <New key={i} chat={chat} handleDetailChat={() => handleDetailChat(chat.sessionId)} />
           ))
         )
       }

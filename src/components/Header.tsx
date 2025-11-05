@@ -40,7 +40,7 @@ export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
             </div>
             <div>
               <div className="text-slate-100 font-semibold">News Checker</div>
-              <div className="text-xs text-slate-300">Verifica la fiabilidad de noticias</div>
+              <div className="text-xs text-slate-300">Check the reliability of news</div>
             </div>
             </div>
 
