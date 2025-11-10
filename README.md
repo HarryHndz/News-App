@@ -1,73 +1,118 @@
-# React + TypeScript + Vite
+# Clarity — News verification app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + Vite frontend for verifying news using AI and external news sources. The app provides a chat interface where you can paste a news URL or an article excerpt and receive a trust analysis, highlighted claims and evidence links.
 
-Currently, two official plugins are available:
+This repository contains the frontend (React + TypeScript + Vite) and integrates with a backend service responsible for news lookups and LLM analysis. Authentication and session handling use Firebase.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Chat-style UI for verifying news articles or article text
+- Supports both URL input and pasted article text
+- Trust score, highlighted claims and source links (from backend)
+- Session management via Firebase
+- Responsive UI built with Tailwind CSS
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + TypeScript + Vite
+- Tailwind CSS
+- Firebase (Auth, realtime/session handling)
+- Backend: Python services deployed on Google Cloud Run
+- Gemini-2.5-Flash (LLM) for analysis and summarization
+- World News API for aggregated news metadata
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Quick start (Windows / PowerShell)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Clone the repo
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+git clone <repo-url>
+cd news-fake-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+npm install
 ```
+
+3. Environment variables
+
+Create a `.env` file in the project root. Vite loads variables prefixed with `VITE_`.
+
+Example `.env`:
+
+```text
+VITE_URL_SERVER=http://localhost:3000
+# Add your Firebase config values if you use environment-driven config
+```
+
+Note: Firebase initialization happens in `src/utils/firebaseConfig.ts`. Edit that file to add your Firebase project values (apiKey, authDomain, projectId, etc.) or wire them from env variables as needed.
+
+4. Run the app (development)
+
+```powershell
+npm run dev
+```
+
+Open the address shown by Vite (usually http://localhost:5173).
+
+5. Build for production
+
+```powershell
+npm run build
+```
+
+6. Preview the production build locally
+
+```powershell
+npm run preview
+```
+
+## Important files & folders
+
+- `src/main.tsx` — app entry point
+- `src/routes.tsx` — React Router config
+- `src/pages/` — pages (chat, landing, login)
+- `src/components/` — reusable UI components
+- `src/hooks/` — custom hooks (e.g. `useSession`, `useHistoryChat`)
+- `src/services/` — API wrappers (e.g. `chatService.ts`)
+- `src/utils/firebaseConfig.ts` — Firebase initialization
+
+## Backend expectations
+
+The frontend expects a backend service with the following endpoints (see `src/services/chatService.ts`):
+
+- `POST /start` — start a chat or append a message
+- `GET /sessions` — list chat sessions
+- `GET /sessions/:id/history` — retrieve conversation history
+
+The LLM (Gemini) and news lookups are handled server-side. Ensure your backend is reachable from `VITE_URL_SERVER` and supports CORS for your frontend origin.
+
+## Troubleshooting
+
+- **CORS or network errors**: verify `VITE_URL_SERVER` points to the running backend and that the backend allows your origin.
+- **Firebase auth issues**: ensure `src/utils/firebaseConfig.ts` contains valid Firebase credentials.
+- **Session/redirect issues**: ensure `SessionProvider` is mounted at the app root (it should wrap the Router).
+
+## Contributing
+
+1. Fork the repo and create a feature branch
+2. Implement changes and add tests if applicable
+3. Open a pull request with a description of the change
+
+## License
+
+MIT
+
+---
+
+If you want, I can:
+
+- add an example `.env.example` file with recommended keys
+- add a short Firebase setup snippet showing where to paste config values
+- include screenshots or a demo GIF in this README
+
+Tell me which addition you prefer and I will add it.
