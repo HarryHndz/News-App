@@ -39,7 +39,7 @@ export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
               N
             </div>
             <div>
-              <div className="text-slate-100 font-semibold">News Checker</div>
+              <div className="text-slate-100 font-semibold">Clarity</div>
               <div className="text-xs text-slate-300">Check the reliability of news</div>
             </div>
             </div>
@@ -56,7 +56,7 @@ export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer"
             >
               <LogOutIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Cerrar sesión</span>
+              <span className="hidden sm:inline">Log out</span>
             </button>
           </div>
           </header>
@@ -67,8 +67,8 @@ export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={handleConfirm}
-        title="Cerrar sesión"
-        description="¿Deseas cerrar tu sesión? Se te redirigirá al login."
+        title="Log out"
+        description="Do you want to log out? You will be redirected to the login page."
       />
     </>
   )

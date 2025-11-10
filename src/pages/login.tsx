@@ -34,8 +34,7 @@ export default function Login() {
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
       <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-8">
         <header className="mb-6 text-center">
-          <h1 className="text-3xl font-semibold text-white">News Fake App</h1>
-          <p className="text-sm text-slate-300 mt-1">Accede a tu cuenta para continuar</p>
+          <h1 className="text-3xl font-semibold text-white">Clarity</h1>
         </header>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -45,7 +44,7 @@ export default function Login() {
 
           <div>
             <label htmlFor="username" className="block text-sm text-slate-300 mb-1">
-              Correo electrónico
+              email
             </label>
             <input
               id="username"
@@ -59,7 +58,7 @@ export default function Login() {
 
           <div>
             <label htmlFor="password" className="block text-sm text-slate-300 mb-1">
-              Contraseña
+              password
             </label>
             <input
               id="password"
@@ -94,10 +93,9 @@ export default function Login() {
         </form>
 
         <div className="mt-6 text-center text-sm text-slate-300">
-          ¿No tienes cuenta?{' '}
-          <button onClick={() => navigate('/register')} className="cursor-pointer text-blue-300 hover:underline">
-            Regístrate
-          </button>
+          <p>Test credentials</p>
+          <p>email: example@correo.com</p>
+          <p>password: 123456</p>
         </div>
       </div>
     </main>

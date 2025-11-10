@@ -24,13 +24,13 @@ export default function ConfirmationModal(
             onClick={onClose}
             className="px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 text-slate-200"
           >
-            Cancelar
+            Cancel
           </button>
           <button
             onClick={() => { onConfirm(); }}
             className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white"
           >
-            Cerrar sesión
+            Log out
           </button>
         </div>
       </div>

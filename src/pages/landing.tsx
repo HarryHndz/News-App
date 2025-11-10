@@ -1,47 +1,13 @@
 import { Shield, CheckCircle, Zap, Lock, TrendingUp, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { GridBackground } from '../components/GridBackground';
-export default function Landing() {
-const navigate = useNavigate();
- const features = [
-    {
-      icon: Shield,
-      title: 'Instant Verification',
-      description: 'Get real-time results about the authenticity of any news article using advanced AI.',
-    },
-    {
-      icon: Lock,
-      title: 'Deep Analysis',
-      description: 'Examine sources, patterns and signals to determine the credibility of information.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Trust Score',
-      description: 'Receive a detailed trust percentage for each verified news item.',
-    },
-    {
-      icon: Zap,
-      title: 'Blazing Fast',
-      description: 'Verify news instantly without waiting or dealing with complex processes.',
-    },
-    {
-      icon: Users,
-      title: 'For Everyone',
-      description: 'Designed for anyone who wants to fight misinformation online.',
-    },
-    {
-      icon: CheckCircle,
-      title: 'Reliable',
-      description: 'Proven technology to detect fake news and misleading content.',
-    },
-  ];
 
-  const stats = [
-    { number: '1M+', label: 'Verified News' },
-    { number: '99%', label: 'Accuracy' },
-    { number: '24/7', label: 'Availability' },
-    { number: '0s', label: 'Response Time' },
-  ];
+import { GridBackground } from '../components/GridBackground';
+import { useSession } from '../hooks/useSession';
+export default function Landing() {
+  const navigate = useNavigate();
+  const {user} = useSession()
+
+
 
   return (
     <GridBackground>
@@ -55,7 +21,7 @@ const navigate = useNavigate();
           <div className="bg-blue-600 p-2 rounded-lg">
             <Shield className="text-white" size={28} />
           </div>
-          <span className="text-white text-2xl font-bold">VerifyNews AI</span>
+          <span className="text-white text-2xl font-bold">Clarity</span>
         </div>
         <button
           onClick={() => navigate('/auth')}
@@ -83,21 +49,12 @@ const navigate = useNavigate();
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <button
-                onClick={() => navigate('/app')}
+                onClick={() => navigate(user ? '/chat' : '/auth')}
                 className="group bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center gap-2"
               >
                 Try Demo
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-16">
-              {stats.map((stat, index) => (
-                <div key={index} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6 hover:border-blue-500/50 transition-all">
-                  <div className="text-3xl font-bold text-blue-400">{stat.number}</div>
-                  <div className="text-slate-400 text-sm">{stat.label}</div>
-                </div>
-              ))}
             </div>
           </div>
 
@@ -106,7 +63,7 @@ const navigate = useNavigate();
               <h2 className="text-4xl font-bold text-white">How It Works</h2>
               <ol className="space-y-4">
                 {[
-                  'Copy the URL of the news article you want to verify',
+                  'Copy the URL or information of the news article you want to verify.',
                   'Paste it into our AI verifier',
                   'Get a detailed analysis in seconds',
                   'Make decisions based on real data',
@@ -132,7 +89,7 @@ const navigate = useNavigate();
                     <p className="text-slate-400 text-sm mb-2">Result:</p>
                     <div className="flex items-center gap-2">
                       <CheckCircle size={20} className="text-green-400" />
-                      <span className="text-green-400 font-semibold">Verified - 92% Trust</span>
+                      <span className="text-green-400 font-semibold">Verified - The news is true because...</span>
                     </div>
                   </div>
                 </div>
@@ -143,26 +100,50 @@ const navigate = useNavigate();
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Key Features</h2>
-            <p className="text-xl text-slate-400">Everything you need to fight misinformation</p>
+            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Technologies We Use</h2>
+            <p className="text-xl text-slate-400">Core stack and services powering this project</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group"
-                >
-                  <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
-                    <Icon className="text-blue-400" size={24} />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                  <p className="text-slate-400">{feature.description}</p>
-                </div>
-              );
-            })}
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group">
+              <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
+                <Zap className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Python</h3>
+              <p className="text-slate-400">Backend logic, data processing and integrations are implemented using modern Python tooling.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group">
+              <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
+                <TrendingUp className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Gemini-2.5-Flash</h3>
+              <p className="text-slate-400">Large language model used for analysis, summarization and claim verification tasks.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group">
+              <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
+                <Users className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">World News API</h3>
+              <p className="text-slate-400">Aggregated news feeds and metadata for cross-checking sources and retrieving original articles.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group">
+              <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
+                <Lock className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Google Cloud Run</h3>
+              <p className="text-slate-400">Containerized backend services are deployed on Cloud Run for scalable, serverless hosting.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 hover:border-blue-500/50 transition-all hover:bg-slate-800/80 group">
+              <div className="bg-blue-600/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600/40 transition-all">
+                <CheckCircle className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Firebase</h3>
+              <p className="text-slate-400">Authentication, realtime session management and hosting are handled through Firebase.</p>
+            </div>
           </div>
         </section>
       </main>
@@ -171,7 +152,7 @@ const navigate = useNavigate();
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <Shield size={24} className="text-blue-400" />
-              <span className="text-slate-300">VerifyNews AI 2025</span>
+              <span className="text-slate-300">Clarity 2025</span>
             </div>
             <p className="text-slate-400 text-sm">
               Fighting misinformation with AI technology
