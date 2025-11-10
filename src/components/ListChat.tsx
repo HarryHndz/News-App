@@ -40,7 +40,6 @@ export const ListChat = ({handleDetailChat, listChats, isLoading, error}: THisto
       {
         listChats.length === 0 ? (
           <ContentDescription 
-            title="No history chat"
             description="You haven't started any chat yet."
             icon={<History className="text-indigo-400" size={32} />}
           />
