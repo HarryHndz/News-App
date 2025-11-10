@@ -69,6 +69,7 @@ export const ChatGeneral = ({sessionId, setSessionId}: TChatGeneralProps)=>{
         setValueInput={setValueInput} 
         handleSend={() => handleNewMessage({value: valueInput, setValue: setValueInput})}
         loadingSend={isLoadingSend}
+        disableSend={history.messages.length === 2}
       />
     </div>
   )

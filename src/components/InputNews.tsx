@@ -5,8 +5,9 @@ interface InputNewProps {
   setValueInput: (value: string) => void
   handleSend: () => Promise<void>
   loadingSend: boolean
+  disableSend:boolean
 }
-export const InputNew = ({ valueInput, setValueInput, handleSend, loadingSend }: InputNewProps)=>{
+export const InputNew = ({ valueInput, setValueInput, handleSend, loadingSend, disableSend }: InputNewProps)=>{
   return(
     <div className="flex flex-row gap-2 bg-slate-700 p-4 rounded-xl sticky bottom-0 left-0 right-0 hover:ring-2 hover:ring-indigo-500 transition-all duration-300 ease-in-out border border-slate-600">
       <input 
@@ -18,7 +19,7 @@ export const InputNew = ({ valueInput, setValueInput, handleSend, loadingSend }:
       <button 
         className="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition-all duration-300 ease-in-out cursor-pointer" 
         onClick={handleSend}
-        disabled={(loadingSend  || valueInput.trim() === '')}
+        disabled={(disableSend) ||(loadingSend  || valueInput.trim() === '')}
       >
         <Send className="w-4 h-4" />
       </button>
