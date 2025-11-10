@@ -4,15 +4,17 @@ import { Message } from "./Message"
 import { useState } from "react"
 import { Sparkles, Newspaper } from "lucide-react"
 import { useHistoryChat } from "../hooks/useHistoryChat"
+import type { IChatList } from "../data/IChat"
 
 type TChatGeneralProps = {
   sessionId?: string
   setSessionId: (params: string) => void
+  setNewChatHistory: (data:IChatList) => void
 }
 
-export const ChatGeneral = ({sessionId, setSessionId}: TChatGeneralProps)=>{
+export const ChatGeneral = ({sessionId, setSessionId,setNewChatHistory}: TChatGeneralProps)=>{
   const [valueInput,setValueInput] = useState<string>("")
-  const {history, isLoading, error,handleNewMessage,isLoadingSend} = useHistoryChat({sessionId, setSessionId})
+  const {history, isLoading, error,handleNewMessage,isLoadingSend} = useHistoryChat({sessionId, setSessionId,setNewChatHistory})
 
   if (isLoading) {
     return (

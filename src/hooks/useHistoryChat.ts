@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import type { IChat } from "../data/IChat"
+import type { IChat, IChatList } from "../data/IChat"
 import { getChatHistory, postChatStart } from "../services/chatService"
 import { useSession } from "./useSession"
 
@@ -7,9 +7,10 @@ import { useSession } from "./useSession"
 type TUseHistoryChatProps = {
   sessionId?: string
   setSessionId: (params: string) => void
+  setNewChatHistory: (data:IChatList) => void
 }
 
-export const useHistoryChat = ({sessionId,setSessionId}:TUseHistoryChatProps) => {
+export const useHistoryChat = ({sessionId,setSessionId,setNewChatHistory}:TUseHistoryChatProps) => {
   const [history, setHistory] = useState<IChat>({sessionId:'', messages:[]})
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isLoadingSend,setIsLoadingSend] = useState<boolean>(false)
@@ -46,6 +47,11 @@ export const useHistoryChat = ({sessionId,setSessionId}:TUseHistoryChatProps) =>
         }))
         lastFetchedRef.current = sessionId
       }
+      setNewChatHistory({
+        sessionId: response.sessionId,
+        title: value.slice(0,20),
+        createdAt: new Date().toISOString()
+      })
     } catch (error:any) {
       setError(`Error sending message: ${error?.message  ?? 'unknown error'}`)
     }finally{
@@ -56,6 +62,7 @@ export const useHistoryChat = ({sessionId,setSessionId}:TUseHistoryChatProps) =>
   useEffect(()=>{
     const fetchHistory = async()=>{
       try {
+        setError(null)
         if (!sessionId) {
           setHistory({sessionId:'', messages:[]})
           setIsLoading(false)

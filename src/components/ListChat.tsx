@@ -1,15 +1,17 @@
+import type { IChatList } from "../data/IChat"
 import { ContentDescription } from "./ContentDescription"
 import { New } from "./News"
 import { History } from "lucide-react"
-import { useListChats } from "../hooks/useListChats"
 import { useNavigate } from "react-router"
 
 type THistoryChatProps = {
   handleDetailChat: (sessionId: string) => void
+  listChats:IChatList[]
+  isLoading: boolean
+  error: string | null
 }
 
-export const ListChat = ({handleDetailChat}: THistoryChatProps) => {
-  const {listChats, isLoading, error} = useListChats()
+export const ListChat = ({handleDetailChat, listChats, isLoading, error}: THistoryChatProps) => {
   const navigate = useNavigate()
   if (isLoading) {
     return(

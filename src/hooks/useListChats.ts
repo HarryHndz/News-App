@@ -26,5 +26,5 @@ export const useListChats = ()=>{
     fetchListChats()
   },[user])
 
-  return {listChats, isLoading, error}
+  return {listChats, isLoading, error,setListChats}
 }
