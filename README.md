@@ -1,31 +1,50 @@
+<!-- prettier-ignore -->
 # Clarity — News verification app
 
-A small React + Vite frontend for verifying news using AI and external news sources. The app provides a chat interface where you can paste a news URL or an article excerpt and receive a trust analysis, highlighted claims and evidence links.
+A lightweight React + Vite frontend that helps you verify news articles using AI and external sources. Paste a news URL or article text in the chat and get a trust analysis, highlighted claims and evidence links.
 
-This repository contains the frontend (React + TypeScript + Vite) and integrates with a backend service responsible for news lookups and LLM analysis. Authentication and session handling use Firebase.
+<!-- Quick visual summary -->
+> Built with React + TypeScript, styled with Tailwind CSS, and using Firebase for auth. The heavy lifting (news lookups + LLM analysis) runs on a backend service.
+
+---
+
+## Table of contents
+
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Quick start (Windows / PowerShell)](#quick-start-windows--powershell)
+- [Environment variables (.env.example)](#environment-variables-envexample)
+- [Firebase setup snippet](#firebase-setup-snippet)
+- [Project structure](#project-structure)
+- [Backend expectations](#backend-expectations)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Features
 
-- Chat-style UI for verifying news articles or article text
-- Supports both URL input and pasted article text
-- Trust score, highlighted claims and source links (from backend)
-- Session management via Firebase
-- Responsive UI built with Tailwind CSS
+- Chat-style interface for verifying news articles or pasted article text
+- Accepts both article URLs and raw text input
+- Shows a trust verdict, highlighted claims and source links (provided by the backend)
+- Session-based chats (Firebase auth + per-session history)
+- Responsive UI powered by Tailwind CSS
 
 ## Tech stack
 
 - React + TypeScript + Vite
 - Tailwind CSS
-- Firebase (Auth, realtime/session handling)
-- Backend: Python services deployed on Google Cloud Run
-- Gemini-2.5-Flash (LLM) for analysis and summarization
-- World News API for aggregated news metadata
+- Firebase Authentication
+- Backend: Python services (deployed to Google Cloud Run)
+- LLM: Gemini-2.5-Flash (server-side)
+- World News API (aggregated news metadata)
+
+---
 
 ## Quick start (Windows / PowerShell)
 
-1. Clone the repo
+1. Clone the repository
 
 ```powershell
 git clone <repo-url>
@@ -38,18 +57,7 @@ cd news-fake-app
 npm install
 ```
 
-3. Environment variables
-
-Create a `.env` file in the project root. Vite loads variables prefixed with `VITE_`.
-
-Example `.env`:
-
-```text
-VITE_URL_SERVER=http://localhost:3000
-# Add your Firebase config values if you use environment-driven config
-```
-
-Note: Firebase initialization happens in `src/utils/firebaseConfig.ts`. Edit that file to add your Firebase project values (apiKey, authDomain, projectId, etc.) or wire them from env variables as needed.
+3. Create a `.env` file (see example below)
 
 4. Run the app (development)
 
@@ -71,37 +79,100 @@ npm run build
 npm run preview
 ```
 
-## Important files & folders
+---
+
+## Environment variables (.env.example)
+
+Create a file named `.env` in the project root (Vite loads variables prefixed with `VITE_`).
+
+Example `.env.example` (copy to `.env` and edit values):
+
+```text
+VITE_URL_SERVER=http://localhost:3000
+# Optional: if you place Firebase config in env vars, add them here
+# VITE_FIREBASE_API_KEY=...
+# VITE_FIREBASE_AUTH_DOMAIN=...
+# VITE_FIREBASE_PROJECT_ID=...
+```
+
+If you prefer, I can create a `.env.example` file in the repo — tell me and I will add it.
+
+---
+
+## Firebase setup snippet
+
+This project initializes Firebase in `src/utils/firebaseConfig.ts`. A minimal snippet you can paste into that file (or wire from env vars):
+
+```ts
+// src/utils/firebaseConfig.ts
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+const firebaseConfig = {
+	apiKey: process.env.VITE_FIREBASE_API_KEY ?? '<your-api-key>',
+	authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN ?? '<your-auth-domain>',
+	projectId: process.env.VITE_FIREBASE_PROJECT_ID ?? '<your-project-id>',
+	// ...other values
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+
+export default app;
+```
+
+Replace the placeholders with your Firebase project values (or add them to `.env` and keep secrets out of the repo).
+
+---
+
+## Project structure (high level)
 
 - `src/main.tsx` — app entry point
-- `src/routes.tsx` — React Router config
+- `src/routes.tsx` — React Router configuration
 - `src/pages/` — pages (chat, landing, login)
-- `src/components/` — reusable UI components
+- `src/components/` — reusable UI components (Header, Chat, Message, Input)
 - `src/hooks/` — custom hooks (e.g. `useSession`, `useHistoryChat`)
-- `src/services/` — API wrappers (e.g. `chatService.ts`)
+- `src/services/` — API wrappers (`chatService.ts`)
 - `src/utils/firebaseConfig.ts` — Firebase initialization
+
+---
 
 ## Backend expectations
 
-The frontend expects a backend service with the following endpoints (see `src/services/chatService.ts`):
+The frontend expects a backend service with these endpoints (see `src/services/chatService.ts`):
 
 - `POST /start` — start a chat or append a message
 - `GET /sessions` — list chat sessions
 - `GET /sessions/:id/history` — retrieve conversation history
 
-The LLM (Gemini) and news lookups are handled server-side. Ensure your backend is reachable from `VITE_URL_SERVER` and supports CORS for your frontend origin.
+The backend is responsible for news lookups and LLM analysis (Gemini). Make sure `VITE_URL_SERVER` points to a reachable backend and that CORS is configured to allow the frontend origin.
+
+---
 
 ## Troubleshooting
 
-- **CORS or network errors**: verify `VITE_URL_SERVER` points to the running backend and that the backend allows your origin.
-- **Firebase auth issues**: ensure `src/utils/firebaseConfig.ts` contains valid Firebase credentials.
-- **Session/redirect issues**: ensure `SessionProvider` is mounted at the app root (it should wrap the Router).
+- CORS or network errors: verify `VITE_URL_SERVER` and backend CORS headers.
+- Firebase auth errors: ensure `src/utils/firebaseConfig.ts` has valid credentials.
+- Session/redirect problems: ensure `SessionProvider` is wrapped at the app root (it should wrap the Router).
+- Duplicate messages on first message: the app uses a ref-based guard to avoid immediate duplicate fetches when a session is created — if you still see duplicates, check `src/hooks/useHistoryChat.ts`.
+
+If you run into an issue and want me to inspect logs or specific files, tell me which flow is failing and I'll debug it.
+
+---
 
 ## Contributing
 
 1. Fork the repo and create a feature branch
-2. Implement changes and add tests if applicable
-3. Open a pull request with a description of the change
+2. Implement changes, add tests where relevant
+3. Open a pull request describing your change
+
+Small contribution ideas:
+
+- Add `.env.example` to the repo
+- Add screenshots or a short demo GIF to the README
+- Improve message parsing (markdown support, richer link previews)
+
+---
 
 ## License
 
@@ -109,10 +180,10 @@ MIT
 
 ---
 
-If you want, I can:
+If you want, I can also:
 
-- add an example `.env.example` file with recommended keys
-- add a short Firebase setup snippet showing where to paste config values
-- include screenshots or a demo GIF in this README
+- add a `.env.example` file to the repo now
+- include a small set of screenshots or a demo GIF (you can attach images)
+- create a short `DEPLOY.md` describing how to deploy the backend to Cloud Run
 
-Tell me which addition you prefer and I will add it.
+Tell me which of those you want next and I will add it.
