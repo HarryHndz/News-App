@@ -1,14 +1,16 @@
 import { useState } from "react"
 import ConfirmationModal from "./ConfirmationModal"
-import {LogOutIcon,ArrowBigDownIcon} from 'lucide-react'
+import {LogOutIcon,ArrowBigDownIcon, Menu} from 'lucide-react'
 import { useSession } from "../hooks/useSession"
 
 type THeaderProps = {
   collapsed: boolean
   setCollapsed: (collapsed: boolean) => void
+  mobileMenuOpen?: boolean
+  setMobileMenuOpen?: (open: boolean) => void
 }
 
-export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
+export const Header = ({ collapsed, setCollapsed, mobileMenuOpen, setMobileMenuOpen }: THeaderProps) => {
   const { logout, user } = useSession()
   const [open, setOpen] = useState(false)
   const handleConfirm = async () => {
@@ -35,6 +37,13 @@ export const Header = ({ collapsed, setCollapsed }: THeaderProps) => {
           <header className="w-full h-full flex items-center justify-between bg-slate-800/40 backdrop-blur-sm rounded-xl p-3 border border-slate-700">
             <div className="flex items-center gap-3">
               <ArrowBigDownIcon className={`h-6 w-6 text-indigo-500 cursor-pointer transition-transform ${collapsed ? 'rotate-180' : 'rotate-0'}`} onClick={() => setCollapsed(true)} />
+              <button
+                className="md:hidden p-2 rounded-md text-indigo-400 hover:bg-slate-700"
+                onClick={() => setMobileMenuOpen ? setMobileMenuOpen(!mobileMenuOpen) : undefined}
+                aria-label="Open chat list"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
             <div className="bg-indigo-600 rounded-md w-10 h-10 flex items-center justify-center text-white font-bold">
               N
             </div>

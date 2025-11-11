@@ -11,14 +11,16 @@ export default function Chat() {
   const {listChats, isLoading, error,setListChats} = useListChats()
   const sessionId = searchParams.get("sessionId")
   const [collapsed, setCollapsed] = useState<boolean>(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const classNames = collapsed ? 'h-full py-5' : 'h-5/6'
   return (
     <div className="h-screen bg-slate-900 flex flex-col p-5">
-      <Header collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Header collapsed={collapsed} setCollapsed={setCollapsed} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
       <main className={`${classNames} flex flex-row gap-4`}>
         <ListChat 
-          handleDetailChat={(params)=> setSearchParams({sessionId: params})
-          }
+          handleDetailChat={(params)=> { setSearchParams({sessionId: params}); setMobileMenuOpen(false); }}
+          mobileOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
           listChats={listChats}
           isLoading={isLoading}
           error={error}
